@@ -18,8 +18,8 @@ public class HelloController {
     }
 
     @GetMapping("/sample")
-    public String smaple() {
-        return "sample";
+    public void smaple() {
+
     }
 
 }
