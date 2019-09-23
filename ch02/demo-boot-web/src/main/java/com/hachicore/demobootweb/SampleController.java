@@ -15,7 +15,7 @@ public class SampleController {
 */
 
     @GetMapping("/hello")
-    public String hello(@RequestParam("name") Person person) {
+    public String hello(@RequestParam("id") Person person) {
         return "hello " + person.getName();
     }
 
