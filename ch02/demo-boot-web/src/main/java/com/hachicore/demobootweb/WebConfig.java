@@ -25,4 +25,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .resourceChain(true); // 캐시 사용 여부(dev: true / prod: false)
 
     }
+
 }
