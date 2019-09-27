@@ -9,8 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.oxm.Marshaller;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,6 +35,9 @@ public class SampleControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    Marshaller marshaller;
 
     @Test
     public void hello() throws Exception {
@@ -82,6 +90,31 @@ public class SampleControllerTest {
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .content(jsonString))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(8620))
+                .andExpect(jsonPath("$.name").value("hachicore"))
+        ;
+    }
+
+    @Test
+    public void xmlMessage() throws Exception {
+        Person person = new Person();
+        person.setId(8620L);
+        person.setName("hachicore");
+
+        StringWriter stringWriter = new StringWriter();
+        Result result = new StreamResult(stringWriter);
+        marshaller.marshal(person, result);
+        String xmlString = stringWriter.toString();
+
+        this.mockMvc.perform(get("/jsonMessage")
+                .contentType(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_XML)
+                .content(xmlString))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(xpath("person/name").string("hachicore"))
+                .andExpect(xpath("person/id").string("8620"))
+        ;
     }
 }
