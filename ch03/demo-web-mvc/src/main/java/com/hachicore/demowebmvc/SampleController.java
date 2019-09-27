@@ -1,21 +1,27 @@
 package com.hachicore.demowebmvc;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(method = RequestMethod.GET)
+@RequestMapping("/hello")
 public class SampleController {
 
-    // @RequestMapping(value = "/hello", method = { RequestMethod.GET, RequestMethod.PUT })
-    // @GetMapping("/hello")
-    @RequestMapping("/hello")
+    // @GetMapping({ "/hello", "/hi" })
+    // @GetMapping("/**")
+    // @RequestMapping("/{name:[a-z]+}")
+    @RequestMapping("/hachicore")
+    @ResponseBody
+    public String helloHachicore() {
+        return "hello hachicore";
+    }
+
+/*
+    @RequestMapping("/**")
     @ResponseBody
     public String hello() {
         return "hello";
     }
+*/
 
 }
