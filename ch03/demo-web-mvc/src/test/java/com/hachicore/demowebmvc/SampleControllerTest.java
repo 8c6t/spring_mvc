@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,8 +54,26 @@ public class SampleControllerTest {
     @Test
     public void producesTest() throws Exception {
         mockMvc.perform(get("/hello")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        // .accept(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
+                // .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    public void headerTest() throws Exception {
+        mockMvc.perform(get("/hello")
+                .header(HttpHeaders.AUTHORIZATION, "111"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    public void paramsTest() throws Exception {
+        mockMvc.perform(get("/hello")
+                    .param("name", "hachicore"))
                 .andDo(print())
                 .andExpect(status().isOk())
         ;

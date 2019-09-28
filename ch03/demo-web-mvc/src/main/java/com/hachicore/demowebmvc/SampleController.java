@@ -1,6 +1,5 @@
 package com.hachicore.demowebmvc;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,8 +18,10 @@ public class SampleController {
 
     @RequestMapping(
             value = "/hello",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.TEXT_PLAIN_VALUE
+            // consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            // produces = MediaType.TEXT_PLAIN_VALUE
+            // headers = HttpHeaders.AUTHORIZATION + "=" + "111"
+            params = "name=hachicore"
     )
     @ResponseBody
     public String hello() {
