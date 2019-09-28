@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -76,6 +78,30 @@ public class SampleControllerTest {
                     .param("name", "hachicore"))
                 .andDo(print())
                 .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    public void headTest() throws Exception {
+        mockMvc.perform(head("/hello")
+                .param("name", "hachicore"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
+    }
+
+    @Test
+    public void optionsTest() throws Exception {
+        mockMvc.perform(options("/hello"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().stringValues(HttpHeaders.ALLOW,
+                        hasItems(
+                                containsString("GET"),
+                                containsString("POST"),
+                                containsString("HEAD"),
+                                containsString("OPTIONS")
+                                )))
         ;
     }
 }
