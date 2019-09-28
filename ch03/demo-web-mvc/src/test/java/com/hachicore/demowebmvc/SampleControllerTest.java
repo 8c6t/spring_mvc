@@ -104,4 +104,11 @@ public class SampleControllerTest {
                                 )))
         ;
     }
+
+    @Test
+    public void customAnnotationMappingTest() throws Exception {
+        mockMvc.perform(get("/hello"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
