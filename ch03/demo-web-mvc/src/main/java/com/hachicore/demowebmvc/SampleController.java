@@ -1,39 +1,21 @@
 package com.hachicore.demowebmvc;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SampleController {
 
-    // @GetMapping({ "/hello", "/hi" })
-    // @GetMapping("/**")
-    // @RequestMapping("/{name:[a-z]+}")
-    @RequestMapping("/hachicore")
+    @GetMapping("/events/{id}")
     @ResponseBody
-    public String helloHachicore() {
-        return "hello hachicore";
-    }
-
-    /*@GetMapping(
-            value = "/hello",
-            // consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            // produces = MediaType.TEXT_PLAIN_VALUE
-            // headers = HttpHeaders.AUTHORIZATION + "=" + "111"
-            params = "name=hachicore"
-    )*/
-    @GetHelloMapping
-    @ResponseBody
-    public String hello() {
-        return "hello";
-    }
-
-    @PostMapping("/hello")
-    @ResponseBody
-    public String helloPost() {
-        return "hello";
+    public Event getEvent(@PathVariable Integer id, @MatrixVariable String name) {
+        Event event = new Event();
+        event.setId(id);
+        event.setName(name);
+        return event;
     }
 
 }
