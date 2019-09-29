@@ -1,19 +1,14 @@
 package com.hachicore.demowebmvc;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SampleController {
-
-    @GetMapping("/events/{id}")
-    @ResponseBody
-    public Event getEvent(@PathVariable Integer id, @MatrixVariable String name) {
-        Event event = new Event();
-        event.setId(id);
-        event.setName(name);
-        return event;
-    }
 
     @PostMapping("/events")
     @ResponseBody
@@ -27,6 +22,14 @@ public class SampleController {
         event.setLimit(limit);
         //event.setName(params.get("name"));
         return event;
+    }
+
+    @GetMapping("/events/form")
+    public String eventsForm(Model model) {
+        Event newEvent = new Event();
+        newEvent.setLimit(50);
+        model.addAttribute("event", newEvent);
+        return "/events/form";
     }
 
 }
