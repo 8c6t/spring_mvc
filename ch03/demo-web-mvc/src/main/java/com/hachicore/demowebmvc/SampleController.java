@@ -7,21 +7,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class SampleController {
 
-    @PostMapping("/events/name/{name}")
-    @ResponseBody
-    public Event postEvent(@Validated(Event.ValitdateName.class) @ModelAttribute Event event, BindingResult bindingResult) {
+    @PostMapping("/events")
+    public String postEvent(@Validated @ModelAttribute Event event,
+                            BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            System.out.println("==================");
-            bindingResult.getAllErrors().forEach(e -> {
-                System.out.println(e);
-            });
+            return "/events/form";
         }
-        return event;
+
+        // save
+        return "redirect:/events/list";
     }
 
     @GetMapping("/events/form")
@@ -30,6 +31,20 @@ public class SampleController {
         newEvent.setLimit(50);
         model.addAttribute("event", newEvent);
         return "/events/form";
+    }
+
+    @GetMapping("/events/list")
+    public String getEvents(Model model) {
+        Event event = new Event();
+        event.setName("maitetsu");
+        event.setLimit(8620);
+
+        List<Event> eventList = new ArrayList<>();
+        eventList.add(event);
+
+        model.addAttribute(eventList);
+
+        return "/events/list";
     }
 
 }
