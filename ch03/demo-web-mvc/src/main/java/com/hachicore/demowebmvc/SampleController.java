@@ -7,21 +7,26 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("event")
 public class SampleController {
 
     @PostMapping("/events")
     public String postEvent(@Validated @ModelAttribute Event event,
-                            BindingResult bindingResult) {
+                            BindingResult bindingResult,
+                            SessionStatus sessionStatus) {
         if(bindingResult.hasErrors()) {
             return "/events/form";
         }
 
         // save
+        sessionStatus.setComplete();
         return "redirect:/events/list";
     }
 
@@ -30,6 +35,7 @@ public class SampleController {
         Event newEvent = new Event();
         newEvent.setLimit(50);
         model.addAttribute("event", newEvent);
+        // httpSession.setAttribute("event", newEvent);
         return "/events/form";
     }
 
