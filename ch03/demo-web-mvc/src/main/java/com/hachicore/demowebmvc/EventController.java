@@ -1,9 +1,11 @@
 package com.hachicore.demowebmvc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,6 +18,15 @@ import java.util.List;
 @SessionAttributes("event")
 public class EventController {
 
+    @Autowired
+    EventValidatorBean eventValidator;
+
+    @InitBinder("event")
+    public void initEventBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setDisallowedFields("id");
+        webDataBinder.addValidators(new EventValidator());
+    }
+
     @ModelAttribute
     public void cagetories(Model model) {
         model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
@@ -27,9 +38,9 @@ public class EventController {
 //    }
 
     @GetMapping("/events/form/name")
-    @ModelAttribute
-    public Event eventsFormName(Model model) {
-        return new Event();
+    public String eventsFormName(Model model) {
+        model.addAttribute("event", new Event());
+        return "/events/form-name";
     }
 
     @PostMapping("/events/form/name")
@@ -37,6 +48,8 @@ public class EventController {
         if(bindingResult.hasErrors()) {
             return "/events/form-name";
         }
+
+        // eventValidator.validate(event, bindingResult);
         return "redirect:/events/form/limit";
     }
 
