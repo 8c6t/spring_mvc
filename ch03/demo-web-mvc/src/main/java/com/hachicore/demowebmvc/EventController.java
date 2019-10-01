@@ -16,10 +16,20 @@ import java.util.List;
 @SessionAttributes("event")
 public class EventController {
 
+    @ModelAttribute
+    public void cagetories(Model model) {
+        model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
+    }
+
+//    @ModelAttribute("categories")
+//    public List<String> cagetories(Model model) {
+//        return List.of("study", "seminar", "hobby", "social");
+//    }
+
     @GetMapping("/events/form/name")
-    public String eventsFormName(Model model) {
-        model.addAttribute("event", new Event());
-        return "/events/form-name";
+    @ModelAttribute
+    public Event eventsFormName(Model model) {
+        return new Event();
     }
 
     @PostMapping("/events/form/name")
