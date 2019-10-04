@@ -19,42 +19,6 @@ import java.util.List;
 @SessionAttributes("event")
 public class EventController {
 
-    @Autowired
-    EventValidatorBean eventValidator;
-
-    @ExceptionHandler
-    public ResponseEntity errorHandler() {
-        return ResponseEntity.badRequest().body("can't create event as...");
-    }
-
-//    @ExceptionHandler({ EventException.class, RuntimeException.class })
-//    public String eventErrorhandler(RuntimeException exception, Model model) {
-//        model.addAttribute("message", "event error");
-//        return "error";
-//    }
-
-//    @ExceptionHandler
-//    public String runtimeErrorhandler(RuntimeException exception, Model model) {
-//        model.addAttribute("message", "runtime error");
-//        return "error";
-//    }
-
-    @InitBinder("event")
-    public void initEventBinder(WebDataBinder webDataBinder) {
-        webDataBinder.setDisallowedFields("id");
-        webDataBinder.addValidators(new EventValidator());
-    }
-
-    @ModelAttribute
-    public void cagetories(Model model) {
-        model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
-    }
-
-//    @ModelAttribute("categories")
-//    public List<String> cagetories(Model model) {
-//        return List.of("study", "seminar", "hobby", "social");
-//    }
-
     @GetMapping("/events/form/name")
     public String eventsFormName(Model model) {
         throw new EventException();
